@@ -64,7 +64,14 @@ namespace QuickRestart.Patches
                     Plugin.SendChatMessage("Cannot restart, ship must be in orbit.");
                     return false;
                 }
-                Plugin.ConfirmRestart();
+                if (Plugin.bypassConfirm)
+                {
+                    Plugin.AcceptRestart(manager);
+                }
+                else
+                {
+                    Plugin.ConfirmRestart();
+                }
                 return false;
             }
             return true;

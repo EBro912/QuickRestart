@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using BepInEx.Configuration;
 using HarmonyLib;
 using System.Reflection;
 
@@ -8,12 +9,17 @@ namespace QuickRestart;
 public class Plugin : BaseUnityPlugin
 {
     public static bool verifying = false;
+    private ConfigEntry<bool> overrideConfirmation;
+    public static bool bypassConfirm = false;
 
     private Harmony harmony;
     private static MethodInfo chat;
 
     private void Awake()
     {
+        overrideConfirmation = Config.Bind("Config", "Override Confirmation", false, "Ignore the confirmation step of restarting.");
+        bypassConfirm = overrideConfirmation.Value;
+
         harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
         harmony.PatchAll();
 
